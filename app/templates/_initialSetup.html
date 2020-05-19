@@ -1,0 +1,52 @@
+<h2 id="initialSetup">Initial Setup</h2>
+<p>
+  We'll be adding files to your Flask application as it's transformed into a PWA. The file structure below will be the assumed structure for any references to files within examples. If you decide to use any of the downloadable resources available throughout this process make sure you change any locations to match your own structure if it differs from the one below:
+</p>
+<div><pre>
+  📦application/
+  ├── 📂static/
+  │   ├── 📂css/
+  │   │   └── 📄styles.css
+  │   ├── 📂images/
+  │   └── 📂js/
+  │       └── 📄app.js
+  ├── 📂templates/
+  │   └── 📄index.html
+  ├── 📄__init__.py
+  └── 📄routes.py
+</pre></div><br>
+<p>
+   Whenever we add a file to your application you'll see this button, you can click it to check what your structure should now look like, including files you need:
+</p>
+<a tabindex="0" class="btn btn-primary" role="button" data-toggle="popover-left" data-trigger="focus" title="Current File Structure" data-content="
+<pre>
+  📦application/
+  ├── 📂static/
+  │   ├── 📂css/
+  │   │   └── 📄styles.css
+  │   ├── 📂images/
+  │   └── 📂js/
+  │       └── 📄app.js
+  ├── 📂templates/
+  │   └── 📄index.html
+  ├── 📄__init__.py
+  └── 📄routes.py
+</pre>
+  "><i class="fas fa-folder-open"></i></a><br>
+
+<br><h4 id="_initialSetupJS">JavaScript</h4>
+<p>
+  Many of the JS examples below require jquery, remember to include it within your pages:
+</p>
+<pre><code class="language-js">
+  &lt;script src=&quot;https://code.jquery.com/jquery-3.1.0.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<br><h4 id="_initialSetupHTTPS">HTTPS</h4>
+<p>
+  For chrome to recognise a site as a PWA and to show the "Add to home screen" prompt one of the conditions is that the site is served over HTTPS. For development, if using the flask development server on localhost, Chrome will still allow the use of features that would otherwise require HTTPS.
+</p>
+<p>
+  When deploying your application you should find an alternative to the flask development server such as Apache and configure the server to handle HTTPS requests and to redirect HTTP requests to HTTPS if possible. This site is hosted with Amazon Web Services, I found <a class="link" target="_blank" href="https://vishnut.me/blog/ec2-flask-apache-setup.html">this tutorial</a> helpful for setting Flask up with Apache. <a class="link" target="_blank" href="https://letsencrypt.org/">Let's encrypt</a> was used for obtaining and implementing an SSL certificate.
+</p>
+<div class="line"></div>

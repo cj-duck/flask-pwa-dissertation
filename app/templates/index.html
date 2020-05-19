@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SFEN19XLNW"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SFEN19XLNW');
+  </script>
+
+  <title>Flask PWA Development Process</title>
+
+  <!-- Basic declarations and Meta descriptions -->
+  <meta charset="utf-8">
+  <link rel="icon" type="img/png" href="{{ url_for('static', filename='images/icon-96.png') }}">
+  <meta name="viewport"    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A progressive web application for developing a PWA with Flask">
+  <meta name="theme-color" content="#CBD394">
+
+  <!-- Web app manifest -->
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
+  <!-- iOS stuff -->
+  <link rel="apple-touch-icon"                       href="{{ url_for('static', filename='images/icon-96.png') }}">
+  <meta name="apple-mobile-web-app-capable"          content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection"                      content="telephone=no">
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <!-- Prism Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/prism.css') }}">
+  <!-- Font awesome for icons -->
+  <script src="https://kit.fontawesome.com/af502f177c.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Flask PWA Development</h3>
+      </div>
+      <ul class="list-unstyled components">
+        <li>
+          <a href="#sectionIntroduction">Introduction</a>
+          <ul class="list-unstyled">
+            <li>
+              <a href="#whatIsPWA">What is a PWA?</a>
+            </li>
+            <li>
+              <a href="#prerequisiteKnowledge">Prerequisite Knowledge</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#initialSetup">Initial Setup</a>
+          <ul class="list-unstyled">
+            <li>
+              <a href="#_initialSetupJS">JavaScript</a>
+            </li>
+            <li>
+              <a href="#_initialSetupHTTPS">HTTPS</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#_webAppManifest">Web App Manifest</a>
+          <ul class="list-unstyled">
+            <li>
+              <a href="#_webAppManifestImplementation">Implementation</a>
+            </li>
+            <li>
+              <a href="#_webAppManifestIOS">iOS</a>
+            </li>
+            <li>
+              <a href="#_webAppManifestTesting">Testing</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#_serviceWorkers">Service Workers</a>
+          <ul class="list-unstyled">
+            <li>
+              <a href="#_serviceWorkersRegistration">Registration</a>
+            </li>
+            <li>
+              <a href="#_serviceWorkersInstallation">Installation</a>
+            </li>
+            <li>
+              <a href="#_serviceWorkersActivate">Activation</a>
+            </li>
+            <li>
+              <a href="#_serviceWorkersFetch">Fetch</a>
+            </li>
+            <li>
+              <a href="#_serviceWorkersCache">Cache Strategies</a>
+            </li>
+            <li>
+              <a href="#_serviceWorkersTesting">Testing</a>
+            </li>
+            <li>
+              <a href="#_serviceWorkersTroubleshoot">Troubleshooting</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#_installability">Installability</a>
+          <ul class="list-unstyled">
+            <li>
+              <a href="#_installabilityButton">Install Button</a>
+            </li>
+            <li>
+              <a href="#_installabilityIOS">iOS</a>
+            </li>
+            <li>
+              <a href="#_installabilityTroubleshooting">Troubleshooting</a>
+            </li>
+          </ul>
+          <li>
+            <a href="#_pushNotifications">Push Notifications</a>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#_pushNotificationsRequest">Request Permission</a>
+              </li>
+              <li>
+                <a href="#_pushNotificationsSW">Service Worker</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#_backgroundsync">Background Sync</a>
+          </li>
+          <li>
+            <a href="#_hardware">Hardware</a>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#_hardwareCamera">Camera</a>
+              </li>
+              <li>
+                <a href="#_hardwareGeo">Geolocation</a>
+              </ul>
+              <li>
+                <a href="#_testing">Testing</a>
+                <ul class="list-unstyled">
+                  <li>
+                    <a href="#_testingLighthouse">Lighthouse</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="list-unstyled CTAs">
+              <li>
+                <a href="#" class="download" hidden>Download source</a>
+              </li>
+              <li>
+                <a href="#" class="download" id="butInstall" aria-label="Install" hidden>Install as App</a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Page Content  -->
+          <div id="content">
+
+            <a type="button" href="{{ url_for('feedback') }}" class="btn btn-dark" id="fixedbutton">Give Feedback</a>
+            <a type="button" class="btn btn-dark" id="sidebarCollapse"><i class="fas fa-bars"></i></a>
+
+            <div id="contentBody">
+              <h1>Progressive Web Application Development with Flask</h1><br>
+
+              {% include '_introduction.html' %}
+              {% include '_initialSetup.html' %}
+              {% include '_webAppManifest.html' %}
+              {% include '_serviceWorkers.html' %}
+              {% include '_installability.html' %}
+              {% include '_pushNotifications.html' %}
+              {% include '_backgroundsync.html' %}
+              {% include '_hardware.html' %}
+              {% include '_testing.html' %}
+            </div>
+          </div>
+        </div>
+
+        <!-- jQuery CDN -->
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/app.js') }}"></script>
+        <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/install.js') }}"></script>
+        <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/prism.js') }}"></script>
+      </body>
+
+      </html>

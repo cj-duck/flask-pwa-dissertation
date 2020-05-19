@@ -1,0 +1,126 @@
+<h2 id="_installability">Installability</h2>
+<p>
+  Now that we are using HTTPS (or localhost), have a web app manifest and have a service worker registered we meet the requirements for a user to install our PWA. Desktop users on chrome will see an installation button on the right in their URL bar:
+</p>
+
+<img src="{{ url_for('static', filename='images/installdesktop.png') }}"><br><br>
+
+<p>
+  When this is clicked you should see an install prompt:
+</p>
+
+<img src="{{ url_for('static', filename='images/installdesktopaction.png') }}"><br><br>
+
+<p>
+  For android Chrome users, when visiting the website users will be prompted with a banner at the bottom of the screen to install the application:
+</p>
+
+<img src="{{ url_for('static', filename='images/installmobile.png') }}"><br><br>
+
+<p>
+  Tapping on this banner will give the following prompt:
+</p>
+
+<img src="{{ url_for('static', filename='images/installmobileaction.png') }}"><br><br>
+
+<p>
+  A gif example of a PWA being installed on Android:
+</p>
+
+<a tabindex="0" class="btn btn-secondary" role="button" data-toggle="popover" data-trigger="focus" data-img="{{ url_for('static', filename='images/androida2hs.gif') }}"/><i class="fas fa-video"></i> Android Add to Home Screen</a><br><br>
+
+<h4 id="_installabilityButton">Install Button</h4>
+<p>
+  If a user misses these prompts or doesn't know how to install the app using the browser they will never know that your web app can be added to their homescreen. You can add an install button within your application, like the one on the sidebar of this site. This section will walk through creating an install.js file (located in the static directory) that will handle the install button.
+</p>
+<p>
+  First our button:
+</p>
+<pre><code class="language-html">
+  &lt;button href=&quot;#&quot; id=&quot;installButton&quot; hidden&gt;Install!&lt;/button&gt;
+</code></pre>
+<p>
+  Then we need to identify the button element in our javascript and add an event listener for a user clicking it:
+</p>
+<pre><code class="language-javascript line-numbers">
+  let deferredInstallPrompt = null;
+  const installButton = document.getElementById('installButton');
+  installButton.addEventListener('click', installPWA);
+</code></pre>
+<p>
+  Within our install.js file we need to add an event listener for the beforeinstallprompt which is triggered by the browser when a user visits the site if it meets the installation criteria. This will make our button visible by removing the hidden attribute. We do this to ensure that an install button does not show up on browsers or operating systems that do not support PWA installation:
+</p>
+<pre><code class="language-javascript line-numbers">
+  window.addEventListener('beforeinstallprompt', saveBeforeInstallPromptEvent);
+
+  function saveBeforeInstallPromptEvent(evt) {
+    deferredInstallPrompt = evt;
+    installButton.removeAttribute('hidden');
+  }
+</code></pre>
+<p>
+  Now we can add our installPWA method to be called when a user clicks the button, this shows the install prompt and hides the button:
+</p>
+<pre><code class="language-javascript line-numbers">
+  function installPWA(evt) {
+    deferredInstallPrompt.prompt();
+    evt.srcElement.setAttribute('hidden', true);
+    deferredInstallPrompt.userChoice
+    .then((choice) => {
+      if (choice.outcome === 'accepted') {
+        console.log('User accepted the A2HS prompt', choice);
+      } else {
+        console.log('User dismissed the A2HS prompt', choice);
+      }
+      deferredInstallPrompt = null;
+    });
+  }
+</code></pre>
+<p>
+  If you want to keep track of how many times your application has been installed you can use an event listener:
+</p>
+<pre><code class="language-javascript line-numbers">
+  window.addEventListener('appinstalled', logAppInstalled);
+
+  function logAppInstalled(evt) {
+    console.log('App was installed.', evt);
+  }
+</code></pre>
+<p>
+  Now all that's left is to reference the script in your pages HTML:
+</p>
+<pre><code class="language-html">
+  &lt;script type=&quot;text/javascript&quot; src=&quot;&#123;&#123; url_for('static', filename='js/install.js') }}&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>
+  Example:
+</p>
+<button href="#" id="installButton" hidden>Install!</button><br><br>
+<p>
+  If you click the button the install prompt will show and the button will disappear. Cancelling the prompt instead of installing the app will make the button reappear.
+<p>
+
+<a type="button" href="{{ url_for('static', filename='downloads/install.js') }}" class="btn btn-primary" download="install.js"><i class="fas fa-file-download"></i> Download Install Script</a><br>
+
+<h4 id="_installabilityIOS">iOS</h4>
+<p>
+  On iOS, users will not be prompted to add a PWA to their homescreen. Users must manually add the application to the homescreen. To see how this is achieved click the button below to view a gif of the add to homescreen process on iOS:
+</p>
+
+<a tabindex="0" class="btn btn-secondary" role="button" data-toggle="popover" data-trigger="focus" data-img="{{ url_for('static', filename='images/iOSa2hs.gif') }}"/><i class="fas fa-video"></i> iOS Add to Home Screen</a><br>
+
+<br><h4 id="_installabilityTroubleshooting">Troubleshooting</h4>
+<ul>
+  <li>
+    <p>
+      If you're using templates and are linking the install script to every page but not every page features an install button you may want to wrap lines using the "installButton" variable in an if statement to check the button is present. This will not affect your application's functionality but will prevent unnecessary errors:
+    </p>
+    <pre><code class="language-javascript line-numbers">
+      if (installButton !== null) {
+        installButton.addEventListener('click', installPWA);
+      }
+    </code></pre>
+  </li>
+</ul>
+
+<div class="line"></div>

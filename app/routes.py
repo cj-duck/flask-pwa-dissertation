@@ -1,0 +1,292 @@
+from flask import render_template, url_for, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+from app import app
+import os
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+class Feedback(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    flask_experience = db.Column(db.Integer)
+    pwa_experience = db.Column(db.Integer)
+    web_experience = db.Column(db.Integer)
+    find_site = db.Column(db.Integer)
+    q1 = db.Column(db.String)
+    q2 = db.Column(db.String)
+    q3 = db.Column(db.String)
+    q4 = db.Column(db.String)
+    q5 = db.Column(db.String)
+    q6 = db.Column(db.String)
+    q7 = db.Column(db.String)
+    q8 = db.Column(db.String)
+    q9 = db.Column(db.String)
+    q10 = db.Column(db.String)
+    q11 = db.Column(db.String)
+    q12 = db.Column(db.String)
+    q13 = db.Column(db.String)
+    q14 = db.Column(db.String)
+    q15 = db.Column(db.String)
+    advice = db.Column(db.String)
+    other = db.Column(db.String)
+    email = db.Column(db.String)
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    if request.method == 'POST':
+        feedback = Feedback(flask_experience=request.form.get('flask-experience'), pwa_experience=request.form.get('pwa-experience'), web_experience=request.form.get('web-experience'), find_site=request.form.get('find-site'), q1=request.form.get('q1'), q2=request.form.get('q2'), q3=request.form.get('q3'), q4=request.form.get('q4'), q5=request.form.get('q5'), q6=request.form.get('q6'), q7=request.form.get('q7'), q8=request.form.get('q8'), q9=request.form.get('q9'), q10=request.form.get('q10'), q11=request.form.get('q11'), q12=request.form.get('q12'), q13=request.form.get('q13'), q14=request.form.get('q14'), q15=request.form.get('q15'), advice=request.form.get('advice'), other=request.form.get('other'))
+
+        if request.form.get('email') == 'email-yes':
+            email = request.form.get('email-text')
+            feedback.email = email
+
+        db.session.add(feedback)
+        db.session.commit()
+
+        return redirect('/feedback/thankyou')
+    return render_template('feedback.html')
+
+@app.route('/feedback/thankyou')
+def thankyou():
+    return render_template('thankyou.html')
+
+@app.route('/feedback/data')
+def data():
+    data = []
+    q1Data = []
+    q1SA = db.session.query(Feedback).filter_by(q1 = 'SA').count()
+    q1Data.append(q1SA)
+    q1A = db.session.query(Feedback).filter_by(q1 = 'A').count()
+    q1Data.append(q1A)
+    q1N = db.session.query(Feedback).filter_by(q1 = 'N').count()
+    q1Data.append(q1N)
+    q1D = db.session.query(Feedback).filter_by(q1 = 'D').count()
+    q1Data.append(q1D)
+    q1SD = db.session.query(Feedback).filter_by(q1 = 'SD').count()
+    q1Data.append(q1SD)
+    q1Data.append('I find the information available on this website helpful.')
+    q1Data.append('q1')
+    data.append(q1Data)
+
+    q2Data = []
+    q2SA = db.session.query(Feedback).filter_by(q2 = 'SA').count()
+    q2Data.append(q2SA)
+    q2A = db.session.query(Feedback).filter_by(q2 = 'A').count()
+    q2Data.append(q2A)
+    q2N = db.session.query(Feedback).filter_by(q2 = 'N').count()
+    q2Data.append(q2N)
+    q2D = db.session.query(Feedback).filter_by(q2 = 'D').count()
+    q2Data.append(q2D)
+    q2SD = db.session.query(Feedback).filter_by(q2 = 'SD').count()
+    q2Data.append(q2SD)
+    q2Data.append('I personally find this website useful.')
+    q2Data.append('q2')
+    data.append(q2Data)
+
+    q3Data = []
+    q3SA = db.session.query(Feedback).filter_by(q3 = 'SA').count()
+    q3Data.append(q3SA)
+    q3A = db.session.query(Feedback).filter_by(q3 = 'A').count()
+    q3Data.append(q3A)
+    q3N = db.session.query(Feedback).filter_by(q3 = 'N').count()
+    q3Data.append(q3N)
+    q3D = db.session.query(Feedback).filter_by(q3 = 'D').count()
+    q3Data.append(q3D)
+    q3SD = db.session.query(Feedback).filter_by(q3 = 'SD').count()
+    q3Data.append(q3SD)
+    q3Data.append('I think the information in this website is described clearly.')
+    q3Data.append('q3')
+    data.append(q3Data)
+
+    q4Data = []
+    q4SA = db.session.query(Feedback).filter_by(q4 = 'SA').count()
+    q4Data.append(q4SA)
+    q4A = db.session.query(Feedback).filter_by(q4 = 'A').count()
+    q4Data.append(q4A)
+    q4N = db.session.query(Feedback).filter_by(q4 = 'N').count()
+    q4Data.append(q4N)
+    q4D = db.session.query(Feedback).filter_by(q4 = 'D').count()
+    q4Data.append(q4D)
+    q4SD = db.session.query(Feedback).filter_by(q4 = 'SD').count()
+    q4Data.append(q4SD)
+    q4Data.append('I think the information in this website is presented clearly.')
+    q4Data.append('q4')
+    data.append(q4Data)
+
+    q5Data = []
+    q5SA = db.session.query(Feedback).filter_by(q5 = 'SA').count()
+    q5Data.append(q5SA)
+    q5A = db.session.query(Feedback).filter_by(q5 = 'A').count()
+    q5Data.append(q5A)
+    q5N = db.session.query(Feedback).filter_by(q5 = 'N').count()
+    q5Data.append(q5N)
+    q5D = db.session.query(Feedback).filter_by(q5 = 'D').count()
+    q5Data.append(q5D)
+    q5SD = db.session.query(Feedback).filter_by(q5 = 'SD').count()
+    q5Data.append(q5SD)
+    q5Data.append('I find this website easy to use and navigate.')
+    q5Data.append('q5')
+    data.append(q5Data)
+
+    q6Data = []
+    q6SA = db.session.query(Feedback).filter_by(q6 = 'SA').count()
+    q6Data.append(q6SA)
+    q6A = db.session.query(Feedback).filter_by(q6 = 'A').count()
+    q6Data.append(q6A)
+    q6N = db.session.query(Feedback).filter_by(q6 = 'N').count()
+    q6Data.append(q6N)
+    q6D = db.session.query(Feedback).filter_by(q6 = 'D').count()
+    q6Data.append(q6D)
+    q6SD = db.session.query(Feedback).filter_by(q6 = 'SD').count()
+    q6Data.append(q6SD)
+    q6Data.append('I find the design of this website appealing.')
+    q6Data.append('q6')
+    data.append(q6Data)
+
+    q7Data = []
+    q7SA = db.session.query(Feedback).filter_by(q7 = 'SA').count()
+    q7Data.append(q7SA)
+    q7A = db.session.query(Feedback).filter_by(q7 = 'A').count()
+    q7Data.append(q7A)
+    q7N = db.session.query(Feedback).filter_by(q7 = 'N').count()
+    q7Data.append(q7N)
+    q7D = db.session.query(Feedback).filter_by(q7 = 'D').count()
+    q7Data.append(q7D)
+    q7SD = db.session.query(Feedback).filter_by(q7 = 'SD').count()
+    q7Data.append(q7SD)
+    q7Data.append('I am likely to revisit this website.')
+    q7Data.append('q7')
+    data.append(q7Data)
+
+    q8Data = []
+    q8SA = db.session.query(Feedback).filter_by(q8 = 'SA').count()
+    q8Data.append(q8SA)
+    q8A = db.session.query(Feedback).filter_by(q8 = 'A').count()
+    q8Data.append(q8A)
+    q8N = db.session.query(Feedback).filter_by(q8 = 'N').count()
+    q8Data.append(q8N)
+    q8D = db.session.query(Feedback).filter_by(q8 = 'D').count()
+    q8Data.append(q8D)
+    q8SD = db.session.query(Feedback).filter_by(q8 = 'SD').count()
+    q8Data.append(q8SD)
+    q8Data.append('I find the development process to be helpful.')
+    q8Data.append('q8')
+    data.append(q8Data)
+
+    q9Data = []
+    q9SA = db.session.query(Feedback).filter_by(q9 = 'SA').count()
+    q9Data.append(q9SA)
+    q9A = db.session.query(Feedback).filter_by(q9 = 'A').count()
+    q9Data.append(q9A)
+    q9N = db.session.query(Feedback).filter_by(q9 = 'N').count()
+    q9Data.append(q9N)
+    q9D = db.session.query(Feedback).filter_by(q9 = 'D').count()
+    q9Data.append(q9D)
+    q9SD = db.session.query(Feedback).filter_by(q9 = 'SD').count()
+    q9Data.append(q9SD)
+    q9Data.append('I personally find this development process useful.')
+    q9Data.append('q9')
+    data.append(q9Data)
+
+    q10Data = []
+    q10SA = db.session.query(Feedback).filter_by(q10 = 'SA').count()
+    q10Data.append(q10SA)
+    q10A = db.session.query(Feedback).filter_by(q10 = 'A').count()
+    q10Data.append(q10A)
+    q10N = db.session.query(Feedback).filter_by(q10 = 'N').count()
+    q10Data.append(q10N)
+    q10D = db.session.query(Feedback).filter_by(q10 = 'D').count()
+    q10Data.append(q10D)
+    q10SD = db.session.query(Feedback).filter_by(q10 = 'SD').count()
+    q10Data.append(q10SD)
+    q10Data.append('I find the information in this development process easy to understand.')
+    q10Data.append('q10')
+    data.append(q10Data)
+
+    q11Data = []
+    q11SA = db.session.query(Feedback).filter_by(q11 = 'SA').count()
+    q11Data.append(q11SA)
+    q11A = db.session.query(Feedback).filter_by(q11 = 'A').count()
+    q11Data.append(q11A)
+    q11N = db.session.query(Feedback).filter_by(q11 = 'N').count()
+    q11Data.append(q11N)
+    q11D = db.session.query(Feedback).filter_by(q11 = 'D').count()
+    q11Data.append(q11D)
+    q11SD = db.session.query(Feedback).filter_by(q11 = 'SD').count()
+    q11Data.append(q11SD)
+    q11Data.append('I consider this development process user friendly.')
+    q11Data.append('q11')
+    data.append(q11Data)
+
+    q12Data = []
+    q12SA = db.session.query(Feedback).filter_by(q12 = 'SA').count()
+    q12Data.append(q12SA)
+    q12A = db.session.query(Feedback).filter_by(q12 = 'A').count()
+    q12Data.append(q12A)
+    q12N = db.session.query(Feedback).filter_by(q12 = 'N').count()
+    q12Data.append(q12N)
+    q12D = db.session.query(Feedback).filter_by(q12 = 'D').count()
+    q12Data.append(q12D)
+    q12SD = db.session.query(Feedback).filter_by(q12 = 'SD').count()
+    q12Data.append(q12SD)
+    q12Data.append('The development process is presented in a suitable way.')
+    q12Data.append('q12')
+    data.append(q12Data)
+
+    q13Data = []
+    q13SA = db.session.query(Feedback).filter_by(q13 = 'SA').count()
+    q13Data.append(q13SA)
+    q13A = db.session.query(Feedback).filter_by(q13 = 'A').count()
+    q13Data.append(q13A)
+    q13N = db.session.query(Feedback).filter_by(q13 = 'N').count()
+    q13Data.append(q13N)
+    q13D = db.session.query(Feedback).filter_by(q13 = 'D').count()
+    q13Data.append(q13D)
+    q13SD = db.session.query(Feedback).filter_by(q13 = 'SD').count()
+    q13Data.append(q13SD)
+    q13Data.append('This development process provides me with sufficient resources to create my own PWA in Flask.')
+    q13Data.append('q13')
+    data.append(q13Data)
+
+    q14Data = []
+    q14SA = db.session.query(Feedback).filter_by(q14 = 'SA').count()
+    q14Data.append(q14SA)
+    q14A = db.session.query(Feedback).filter_by(q14 = 'A').count()
+    q14Data.append(q14A)
+    q14N = db.session.query(Feedback).filter_by(q14 = 'N').count()
+    q14Data.append(q14N)
+    q14D = db.session.query(Feedback).filter_by(q14 = 'D').count()
+    q14Data.append(q14D)
+    q14SD = db.session.query(Feedback).filter_by(q14 = 'SD').count()
+    q14Data.append(q14SD)
+    q14Data.append('I find the structure of the development process clear.')
+    q14Data.append('q14')
+    data.append(q14Data)
+
+    q15Data = []
+    q15SA = db.session.query(Feedback).filter_by(q15 = 'SA').count()
+    q15Data.append(q15SA)
+    q15A = db.session.query(Feedback).filter_by(q15 = 'A').count()
+    q15Data.append(q15A)
+    q15N = db.session.query(Feedback).filter_by(q15 = 'N').count()
+    q15Data.append(q15N)
+    q15D = db.session.query(Feedback).filter_by(q15 = 'D').count()
+    q15Data.append(q15D)
+    q15SD = db.session.query(Feedback).filter_by(q15 = 'SD').count()
+    q15Data.append(q15SD)
+    q15Data.append('I find the development information available to be accurate.')
+    q15Data.append('q15')
+    data.append(q15Data)
+
+    return render_template('data.html', data = data)
+
+@app.route('/service-worker.js')
+def sw():
+    return app.send_static_file('service-worker.js'), 200, {'Content-Type': 'text/javascript'}

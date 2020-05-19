@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SFEN19XLNW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SFEN19XLNW');
+  </script>
+
+  <title>Flask PWA Development Process</title>
+
+  <!-- Basic declarations and Meta descriptions -->
+  <meta charset="utf-8">
+  <link rel="icon" type="img/png" href="{{ url_for('static', filename='images/icon-96.png') }}">
+  <meta name="viewport"    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A progressive web application for developing a PWA with Flask">
+
+  <!-- Web app manifest -->
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
+  <!-- iOS stuff -->
+  <link rel="apple-touch-icon"                       href="{{ url_for('static', filename='images/icon-96.png') }}">
+  <meta name="apple-mobile-web-app-capable"          content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection"                      content="telephone=no">
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <!-- Font awesome for icons -->
+  <script src="https://kit.fontawesome.com/af502f177c.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Flask PWA Development</h3>
+      </div>
+
+      <ul class="list-unstyled CTAs">
+        <li>
+          <a href="{{ url_for('index') }}" class="download">Back to main</a>
+        </li>
+      </nav>
+
+      <!-- Page Content  -->
+      <div id="contentData">
+
+        <a type="button" class="btn btn-dark" id="sidebarCollapse"><i class="fas fa-bars"></i></a>
+        <a href="{{url_for('index')}}"type="button" class="btn btn-dark" id="fixedbutton"><i class="fas fa-home"></i></i></a>
+
+        <div id="contentBody" class="container" styles="max-width: 100%">
+          <div class="row">
+            <div class="col-sm">
+              <div id="q1"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q2"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q3"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <div id="q4"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q5"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q6"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <div id="q7"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q8"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q9"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <div id="q10"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q11"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q12"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <div id="q13"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q14"></div>
+            </div>
+            <div class="col-sm">
+              <div id="q15"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- jQuery CDN -->
+      <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+      <!-- Popper.JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+      <!-- Bootstrap JS -->
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+      <!-- jQuery Custom Scroller CDN -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
+      <script type="text/javascript" src="{{ url_for('static', filename='js/install.js') }}"></script>
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+          });
+
+          $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+          });
+        });
+
+        document.querySelector('#contentBody').addEventListener('click', function () {
+          if ($(window).width() < 768) {
+            if ($('#sidebar, #content').hasClass('active')) {
+              $('#sidebar, #content').toggleClass('active');
+              $('.collapse.in').toggleClass('in');
+              $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            }
+          }
+        });
+      </script>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          // Add smooth scrolling to all links
+          $("a").on('click', function(event) {
+
+            // Make sure this.hash has a value before overriding default behavior
+            if (this.hash !== "") {
+              // Prevent default anchor click behavior
+              event.preventDefault();
+
+              // Store hash
+              var hash = this.hash;
+
+              // Using jQuery's animate() method to add smooth page scroll
+              // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+              $('html, body').animate({
+                scrollTop: $(hash).offset().top
+              }, 800, function(){
+
+                // Add hash (#) to URL when done scrolling (default click behavior)
+                window.location.hash = hash;
+              });
+            } // End if
+          });
+        });
+      </script>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript">
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+          {% for i in data %}
+          // Create the data table.
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Response');
+          data.addColumn('number', 'Amount');
+          data.addColumn({type: 'string', role: 'style'});
+          data.addRows([
+          ['SA', {{ i[0] }}, 'color: #339900'],
+          ['A', {{ i[1] }}, 'color: #99cc33'],
+          ['N', {{ i[2] }}, 'color: #ffcc00'],
+          ['D', {{ i[3] }}, 'color: #ff9966'],
+          ['SD', {{ i[4] }}, 'color: #cc3300']
+          ]);
+
+          // Set chart options
+          var options = {'title':'{{ i[5] }}',
+          legend: {
+            position: 'none'
+          },
+          };
+
+
+          // Instantiate and draw our chart, passing in some options.
+          var chart = new google.visualization.BarChart(document.getElementById('{{ i[6] }}'));
+          chart.draw(data, options);
+          {% endfor %}
+        }
+      </script>
+    </body>
+
+    </html>

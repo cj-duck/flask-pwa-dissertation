@@ -1,0 +1,49 @@
+<h2 id="_backgroundsync">Background Sync</h2>
+<p>
+  Background sync allows actions taken when offline to be deferred until a network connection is available. Sync events have tags which enable us to differentiate between different sync actions. When we register our service worker we need to save the registration (lines 1 & 7):
+</p>
+
+<pre><code class="language-js line-numbers">
+  var swRegistration = null;
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+    .register('./service-worker.js')
+    .then(function(registration) {
+        console.log('Service Worker Registered!');
+        swRegistration = registration;
+        return registration;
+    })
+    .catch(function(err) {
+        console.error('Unable to register service worker.', err);
+    });
+}
+</pre></code>
+
+<p>
+  Then, we need to set up a listener for a sync event within our service worker:
+</p>
+
+<pre><code class="language-js line-numbers">
+  self.addEventListener('sync', function(event) {
+    if (event.tag == 'example-tag') {
+      event.waitUntil(
+      // Actions to be performed go here.
+      );
+    }
+  });
+</pre></code>
+
+<p>
+  Now we can request a sync whenever it's needed within our JavaScript.
+</p>
+
+<pre><code class="language-js line-numbers">
+navigator.serviceWorker.ready.then(function(swRegistration) {
+  return swRegistration.sync.register('example-tag');
+});
+</pre></code>
+
+<p>
+  Using this, if the sync fails it will be scheduled for a retry once connectivity is resumed.
+</p>
+<div class="line"></div>

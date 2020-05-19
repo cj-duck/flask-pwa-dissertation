@@ -1,0 +1,227 @@
+<h2 id="_webAppManifest">Web App Manifest</h2>
+<p>
+  For an Android device the web app manifest supplies the web browser with useful information about the application. This information is then used to determine how the application will behave upon installation.
+</p>
+<p>
+  We include a web app manifest as it is one of the key components recquired for your application to be recognised by Chrome as a PWA. The web app manifest attributes that are recommended for your PWA are described below but you can find a full list <a class="link" href="https://developer.mozilla.org/en-US/docs/Web/Manifest#Members" target="_blank">here</a>.
+</p>
+
+<table class="table table-striped table-bordered" align="center">
+  <thead>
+    <tr>
+      <th scope="col">Attribute Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">name</th>
+      <td>The name of the application, used for the app install prompt.</td>
+      <td>The full application name e.g. "Flask Progressive Web Application"</td>
+    </tr>
+    <tr>
+      <th scope="row">short_name</th>
+      <td>The shortened application name. This will be displayed below the homescreen icon upon installation, in the app launcher and anywhere else where space may be limited.</td>
+      <td>A shortened version of the application name e.g. "Flask PWA"</td>
+    </tr>
+    <tr>
+      <th scope="row">theme_color</th>
+      <td>The hex code of the colour for the tool bar and the application's preview in task switchers.</td>
+      <td>A chosen colour code, this should compliment your application's design if possible e.g. "#CBD394"</td>
+    </tr>
+    <tr>
+      <th scope="row">background_color</th>
+      <td>The hex code of the colour used for the application’s splash screen.</td>
+      <td>The application's icon will be displayed with this colour as the background so this should be cohesive with your icon e.g. "#CBD394"</td>
+    </tr>
+    <tr>
+      <th scope="row">start_url</th>
+      <td>Tells the web browser which page to launch the PWA on.</td>
+      <td>Your chosen url e.g. "start_url": "/"</td>
+    </tr>
+    <tr>
+      <th scope="row">display</th>
+      <td>This defines the web browser user interface that will be shown when the user is using the application.</td>
+      <td>One of the conditions for Chrome to display an add to home screen prompt is that this value is set to "standalone". You can view the other values <a class="link" href="https://developer.mozilla.org/en-US/docs/Web/Manifest/display" target="_blank">here</a>.</td>
+    </tr>
+    <tr>
+      <th scope="row">orientation</th>
+      <td>You can force a user to view your application in a specific orientation with this attribute. This can be useful for applications such as games in which changing the orientation might affect functionality.</td>
+      <td>
+        <ul style="list-style: none; padding: 0">
+          <li>"any" - The user can use the application in both portrait or landscape view.</li>
+          <li>"landscape" - forces landscape view.</li>
+          <li>"portrait" - forces portrait view.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">icons</th>
+      <td>This utilises an array of images to be used as application icons. For the add to home screen prompt icons must be supplied with sizes of 192px and 512px</td>
+      <td>To add an icon the icon's filepath, type and size must be specified e.g:
+        <pre style="white-space: pre-line">
+          "src": "/static/images/icon-64",
+          "type": "image/png",
+          "sizes": "64x64"
+        </pre>
+      </td>
+  </tbody>
+</table>
+
+<br><h4 id="_webAppManifestImplementation">Implementation</h4>
+<p>
+  The web app manifest is structured as a simple JSON file. It's quick to make and easy to implement which is why it's the first development section of this process. As an example, here is the manifest for this website:
+</p>
+<pre class=" language-json line-numbers"><code>
+{
+  "name": "Developing a PWA in Flask",
+  "short_name": "Flask PWA",
+  "theme_color": "#CBD394",
+  "background_color": "#F1F7C6",
+  "icons": [
+    {
+        "src": "/static/images/icon-64.png",
+        "type": "image/png",
+        "sizes": "64x64"
+      },
+      {
+        "src": "/static/images/icon-96.png",
+        "type": "image/png",
+        "sizes": "96x96"
+      },
+      {
+        "src": "/static/images/icon-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/static/images/icon-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
+</code></pre>
+
+<p>
+  If you don't have icons for your web application yet there are many free sets available online that you can use as placeholders. Alternatively, feel free to download the icons used for this website to use so that you can configure your PWA to be installable:
+<p>
+
+<a type="button" href="{{ url_for('static', filename='downloads/icons.zip') }}" class="btn btn-primary" download="icons"><i class="fas fa-file-download"></i> Download Example Icons</a>
+
+<p>
+  Once you've created your manifest.json file you need to pop it in your static directory and create a reference to it in your html. This is done with a link tag in your pages' head:
+</p>
+
+<pre><code class="language-html">&lt;link rel="manifest" href="&#123;&#123; url_for('static', filename='manifest.json') &#125;&#125;"&gt;</code></pre><br>
+
+<a tabindex="0" class="btn btn-primary" role="button" data-toggle="popover-left" data-trigger="focus" title="Current File Structure" data-content="
+<pre>
+  📦application/
+  ├── 📂static/
+  │   ├── 📂css/
+  │   │   └── 📄styles.css
+  │   ├── 📂images/
+  │   │   ├── 🖼️icon-192.png
+  │   │   └── 🖼️icon-512.png
+  │   └── 📂js/
+  │   │   └── 📄app.js
+  │   └── 📄manifest.json
+  ├── 📂templates/
+  │   └── 📄index.html
+  ├── 📄__init__.py
+  └── 📄routes.py
+</pre>
+  "><i class="fas fa-folder-open"></i></a><br>
+
+<br><h4 id="_webAppManifestIOS">iOS</h4>
+<p>
+  Unfortunately, iOS does not support the use of a web app manifest. Instead Apple have defined a set of meta tags that can be applied to the head of a page to supply the browser with limited customisation and meta information:
+</p>
+<ul>
+<li>
+<p><h5>apple-touch-icon</h5>
+  <p>The home screen icon for adding the application to the home screen. Multiple icons can be referenced for different resolutions.</p>
+  <pre><code class="language-html">
+    &lt;link rel=&quot;apple-touch-icon&quot; sizes=&quot;180x180&quot; href=&quot;images/apple_icon.png&quot;&gt;
+  </code></pre>
+</p>
+</li>
+<li>
+<p><h5>apple-touch-startup-image</h5>
+  <p>The image that is displayed when the web app launches, much like the splashscreen for Android.</p>
+  <pre><code class="language-html">
+    &lt;link rel=&quot;apple-touch-startup-image&quot; href=&quot;images/apple_launch.png&quot;&gt;
+  </code></pre>
+</p>
+</li>
+<li>
+<p><h5>app-mobile-web-app-title</h5>
+  <p>The name of the application, displayed beneath the home screen icon.</p>
+  <pre><code class="language-html">
+    &lt;meta name="apple-mobile-web-app-title" content="Flask PWA"&gt;
+  </code></pre>
+</p>
+</li>
+<li>
+<p><h5>apple-mobile-web-app-capable</h5>
+  <p>This attribute can have two values "Yes" or "No". If yes it hides the browser's user interface components.</p>
+  <pre><code class="language-html">
+    &lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;
+  </code></pre>
+</p>
+</li>
+<li>
+<p><h5>apple-mobile-web-app-status-bar-style</h5>
+  <p>For changing the colour of the status bar that is at the top of an iOS display. This can be made hidden to use the entire screen but this is not recommended as users will need to leave your application to check the time or other notifications.</p>
+  <pre><code class="language-html">
+    &lt;meta name="apple-mobile-web-app-status-bar-style" content="black"&gt;
+  </code></pre>
+</p>
+</li>
+</ul>
+<p>
+  With the web app manifest and iOS tags implemented the header for you pages (ideally as part of a base template) will look something like this, including your own additions and references to external libraries such as bootstrap
+</p>
+
+<pre><code class="language-html line-numbers">
+  &lt;head&gt;
+
+  &lt;title&gt;your_pwa_title&lt;/title&gt;
+
+  &lt;!-- Basic declarations and Meta descriptions --&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;link rel=&quot;icon&quot; href=&quot;&#123;&#123; url_for('static', filename='images/icon-96.png') }}&quot;&gt;
+  &lt;meta name=&quot;viewport&quot;    content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+  &lt;meta name=&quot;description&quot; content=&quot;your_pwa_description&quot;&gt;
+
+  &lt;!-- Web app manifest --&gt;
+  &lt;link rel=&quot;manifest&quot; href=&quot;&#123;&#123; url_for('static', filename='manifest.json') }}&quot;&gt;
+
+  &lt;!-- iOS --&gt;
+  &lt;link rel=&quot;apple-touch-icon&quot;                       href=&quot;&#123;&#123; url_for('static', filename='images/icon-96.png') }}&quot;&gt;
+  &lt;meta name=&quot;apple-mobile-web-app-capable&quot;          content=&quot;yes&quot;&gt;
+  &lt;meta name=&quot;apple-mobile-web-app-status-bar-style&quot; content=&quot;black&quot;&gt;
+  &lt;meta name=&quot;format-detection&quot;                      content=&quot;telephone=no&quot;&gt;
+
+  &lt;!-- Custom CSS --&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;&#123;&#123; url_for('static', filename='css/base.css') }}&quot;&gt;
+
+&lt;/head&gt;
+</code></pre>
+<i>Note:</i> The "format-detection" tag under iOS is to prevent strings of numbers formated like a telephone number being formatted into a link to call the number. This is done by default in Safari. Simply remove this tag to revert this change.<br><br>
+
+<h4 id="_webAppManifestTesting">Testing</h4>
+<p>
+  To check that your web app manifest is being read by the browser, head into Chrome dev tools and under the "Application" tab click "Manifest" and you should see something like this:
+</p>
+<img width="100%" src="{{ url_for('static', filename='images/manifest.png') }}">
+<p>
+  We are not yet able to demonstrate how the manifest is used during installation. This features, such as the applications splash screen, will be included in the installability section.
+</p>
+
+<div class="line"></div>

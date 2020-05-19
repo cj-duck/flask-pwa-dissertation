@@ -1,0 +1,224 @@
+<h2 id="_serviceWorkers">Service Workers</h2>
+<p>
+ A service worker is a script that is run in the background by a web browser. It's going to manage the PWAs cache and be used to implement push notifications and background sync. In the examples below the service worker file is called "service-worker.js" and it is located in the static file directory alongside the web app manifest.
+</p>
+<a tabindex="0" class="btn btn-primary" role="button" data-toggle="popover-left" data-trigger="focus" title="Current File Structure" data-content="
+<pre>
+  📦application/
+  ├── 📂static/
+  │   ├── 📂css/
+  │   │   └── 📄styles.css
+  │   ├── 📂images/
+  │   │   ├── 🖼️icon-192.png
+  │   │   └── 🖼️icon-512.png
+  │   └── 📂js/
+  │   │   └── 📄app.js
+  │   ├── 📄manifest.json
+  │   └── 📄service-worker.js
+  ├── 📂templates/
+  │   └── 📄index.html
+  ├── 📄__init__.py
+  └── 📄routes.py
+</pre>
+  "><i class="fas fa-folder-open"></i></a><br><br>
+
+<h4 id="_serviceWorkersRegistration">Registration</h4>
+<p>
+  We need to tell the web browser where your service worker file is located. For this we must define a route for the service worker file and direct the browser to it using javascript on your webpages.
+</p>
+<p>
+  Wherever you are defining the routes for your web application one must be added for serving the service worker javascript file.
+</p>
+<pre><code class="language-python line-numbers">
+  @app.route('/service-worker.js')
+  def sw():
+      return app.send_static_file('service-worker.js')
+</code></pre>
+<p>
+  Then in our main javascript file for the application we can register the service worker with the browser:
+</p>
+<pre><code class="language-javascript line-numbers">
+  if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+      .register('./service-worker.js')
+      .then(function(registration) {
+          console.log('Service Worker Registered!');
+          return registration;
+      })
+      .catch(function(err) {
+          console.error('Unable to register service worker.', err);
+      });
+  }
+</code></pre>
+<p>
+  You can define the route as anything you want as long as you're consistent when providing the route in your registration code. If successful, within the Chrome dev tools, you'll see "Service Worker Registered!" logged in the console and your service worker will appear under the service worker tab:
+</p>
+<img width="100%" src="{{ url_for('static', filename='images/serviceworker.png') }}"><br><br>
+
+<h4 id="_serviceWorkersInstallation">Installation</h4>
+<p>
+  Once your service worker has been registered the first event it handles is the install event. We're going to use this event to cache files, but first we need to declare the cache and specify the files we want cached. As an example we're caching a simple offline page to be served if the user has no network connection:
+</p>
+
+<pre><code class="language-js line-numbers">
+  const CACHE_NAME = 'static-cache';
+
+  const FILES_TO_CACHE = [
+    '/static/offline.html',
+  ];
+</code></pre>
+
+<p>
+  Now the install event:
+</p>
+
+<pre><code class="language-js line-numbers">
+  self.addEventListener('install', (evt) => {
+    console.log('[ServiceWorker] Install');
+    evt.waitUntil(
+      caches.open(CACHE_NAME).then((cache) => {
+        console.log('[ServiceWorker] Pre-caching offline page');
+        return cache.addAll(FILES_TO_CACHE);
+      })
+    );
+
+    self.skipWaiting();
+  });
+</code></pre>
+
+<p>
+  On install this code opens the cache you declared previously (CACHE_NAME) and then caches the files you want caching (FILES_TO_CACHE).
+</p>
+
+<h4 id="_serviceWorkersActivate">Activation</h4>
+<p>
+  The activate event happens the first time a connection is made to the service worker. When a new service worker is made available it is installed in the background but not activated until there are no pages using the old service worker. We'll use this to clean up any old caches.
+</p>
+
+<pre><code class="language-js line-numbers">
+  self.addEventListener('activate', (evt) => {
+    console.log('[ServiceWorker] Activate');
+    evt.waitUntil(
+      caches.keys().then((keyList) => {
+        return Promise.all(keyList.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log('[ServiceWorker] Removing old cache', key);
+            return caches.delete(key);
+          }
+        }));
+      })
+    );
+    self.clients.claim();
+  });
+</pre></code>
+
+<p>
+  When the service worker is activated it checks for the old cache and removes it. When updating service workers change the name of the cache.
+</p>
+
+<h4 id="_serviceWorkersFetch">Fetch</h4>
+
+<p>
+  Now that the files are cached we need a way of serving them. The fetch event listener allows the service worker to work as a middleman between your web server and the browser. For now we'll just add the fetch event listener so that it does not utilise the cache and responds only with network requests:
+</p>
+
+<pre><code class="language-js line-numbers">
+  self.addEventListener('fetch', function(event) {
+  event.respondWith(fetch(event.request));
+});
+</code></pre>
+
+<p>
+  There are many ways a service worker can serve files and manage the cache. These will be explored next.
+</p>
+
+<h4 id="_serviceWorkersCache">Cache Strategies</h4>
+
+<p>
+  The way in which you manage your cache and the origin of the files you serve will depend on the type of application you're developing. Here we will go over multiple different ways to go about this or "strategies" as well as describing the use case for each. These examples are taken from the <a class="link" target="_blank" href="https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook">Offline Cookbook</a> documentation from Google, check it out for more information.
+</p>
+
+<h5>Network only with offline page</h5>
+<p>
+  If your application requires a user to have a network connection you don't want them to see the default offline page (the Chrome dinosaur for example) as this ruins the user's "native-like" experience. Instead you can serve a custom offline page that was cached previously.
+</p>
+
+<pre><code class="language-js line-numbers">
+  self.addEventListener('fetch', (evt) => {
+    if (evt.request.mode !== 'navigate') {
+      return;
+    }
+    evt.respondWith(fetch(evt.request).catch(() => {
+        return caches.open(CACHE_NAME).then((cache) => {
+          return cache.match('offline.html');
+        });
+      })
+    );
+  });
+</code></pre>
+
+<p>
+  Here we can see that if there's an error when fetching the request via the network the offline page is returned.
+</p>
+
+<h5>Network falling back to cache</h5>
+<p>
+  Using this strategy means users will always be served the most up to date version of your application, but if they lose network connection the cached data will be served instead.
+</p>
+
+<pre><code class="language-js line-numbers">
+  self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    fetch(event.request).catch(function() {
+      return caches.match(event.request);
+    })
+  );
+});
+</code></pre>
+
+<p>
+  The service worker tries to make the request via the network (fetch(event.request)) and falls back to the cache if this is unsuccessful (caches.match(event.request)).
+
+<h5>Cache falling back to network</h5>
+<p>
+  Ideal for applications that prioritise offline use. Cached content is served faster, rather than waiting for the resource to be downloaded. This is good for PWAs as this makes users percieve the application as faster and even native.
+</p>
+
+<pre><code class="language-js line-numbers">
+  self.addEventListener('fetch', function(event) {
+    event.respondWith(
+      caches.match(event.request).then(function(response) {
+        return response || fetch(event.request);
+      })
+    );
+  });
+</code></pre>
+
+<p>
+  The service worker handles the request by checking the cache (cache.match(event.request)) and responding with either the response from the catch or a network request (fetch(event.request)).
+</p>
+
+<h4 id="_serviceWorkersTesting">Testing</h4>
+<p>
+  You can check that your service worker is caching the specified files properly using the Chrome development tools. Under the application tab you'll find your cache in the Cache Storage section:
+</p>
+<img width="100%" src="{{ url_for('static', filename='images/cache.PNG') }}"><br><br>
+
+<h4 id="_serviceWorkersTroubleshoot">Troubleshooting</h4>
+<ul>
+  <li>
+    <p>
+      <b>Service Worker registration error: Unsupported MIME type ('text/html')</b>
+    </p>
+    <p>
+      If you find yourself getting this error in the DevTools console simply change your route return to specify the returned content type:
+    </p>
+    <pre><code class="language-python line-numbers">
+      @app.route('/service-worker.js')
+      def sw():
+          return app.send_static_file('service-worker.js'), 200, {'Content-Type': 'text/javascript'}
+    </code></pre>
+  </li>
+</ul>
+
+<div class="line"></div>

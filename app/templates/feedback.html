@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SFEN19XLNW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SFEN19XLNW');
+  </script>
+
+  <title>Flask PWA Development Process</title>
+
+  <!-- Basic declarations and Meta descriptions -->
+  <meta charset="utf-8">
+  <link rel="icon" type="img/png" href="{{ url_for('static', filename='images/icon-96.png') }}">
+  <meta name="viewport"    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="A progressive web application for developing a PWA with Flask">
+
+  <!-- Web app manifest -->
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
+  <!-- iOS stuff -->
+  <link rel="apple-touch-icon"                       href="{{ url_for('static', filename='images/icon-96.png') }}">
+  <meta name="apple-mobile-web-app-capable"          content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection"                      content="telephone=no">
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+  <!-- Font awesome for icons -->
+  <script src="https://kit.fontawesome.com/af502f177c.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Flask PWA Development</h3>
+      </div>
+
+      <ul class="list-unstyled CTAs">
+        <li>
+          <a href="{{ url_for('index') }}" class="download">Back to main</a>
+        </li>
+      </nav>
+
+      <!-- Page Content  -->
+      <div id="content">
+
+        <a type="button" class="btn btn-dark" id="sidebarCollapse"><i class="fas fa-bars"></i></a>
+        <a href="{{url_for('index')}}"type="button" class="btn btn-dark" id="fixedbutton"><i class="fas fa-home"></i></i></a>
+
+        <div id="contentBody">
+        <h2>Feedback</h2>
+        <p>
+          If you have the time, please provide me some feedback by answering the questions below. Feel free to skip the initial questions and go straight to other comments if you'd rather not spend the time answering multiple choice questions, any feedback is greatly appreciated. You can head back to the main page using the sidebar!<br>
+          Remember to hit the submit button after answering.
+        </p>
+
+
+        <form action="/feedback" method="POST">
+          <h3>About you</h3>
+          <legend>How much experience do you have with Flask?</legend>
+          <select name="flask-experience">
+            <option value="1">I've never used flask before</option>
+            <option value="2">I've set up a basic flask application before</option>
+            <option value="3">I am experienced in developing with Flask</option>
+            <option value="4">I am very experienced in developing with Flask</option>
+          </select><br><br>
+
+            <legend>How much experience do you have with PWA development?</legend>
+            <select name="pwa-experience">
+              <option value="1">I've never developed a PWA before</option>
+              <option value="2">I've developed a basic PWA before</option>
+              <option value="3">I am an experienced PWA developer</option>
+              <option value="4">I am a very experienced PWA developer</option>
+            </select><br><br>
+
+            <legend>How much experience do you have with web development?</legend>
+            <select name="web-experience">
+              <option value="1">I've never created a website before</option>
+              <option value="2">I've set up a basic website before</option>
+              <option value="3">I am experienced in developing websites</option>
+              <option value="4">I am very experienced in developing websites</option>
+            </select><br><br>
+
+            <legend>Where did you find this site?</legend>
+            <select name="find-site">
+              <option value="1">Someone sent it to me</option>
+              <option value="2">Flask Subreddit</option>
+              <option value="3">Web Dev Subreddit</option>
+              <option value="4">PWA Subreddit</option>
+              <option value="5">Stack Overflow</option>
+              <option value="6">Web designer forum</option>
+              <option value="7">Web developer forum</option>
+              <option value="8">Google</option>
+            </select><br>
+
+            <br><br><h3>About the site</h3>
+            <fieldset>
+              <legend>I find the information available on this website helpful.</legend>
+              <input type="radio" name="q1" id="1-SA" value="SA" /><label for="1-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q1" id="1-A" value="A"  /><label for="1-A"> Agree&emsp;</label>
+              <input type="radio" name="q1" id="1-N" value="N" /><label for="1-N"> Neutral&emsp;</label>
+              <input type="radio" name="q1" id="1-D" value="D" /><label for="1-D"> Disagree&emsp;</label>
+              <input type="radio" name="q1" id="1-SD" value="SD" /><label for="1-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I personally find this website useful.</legend>
+              <input type="radio" name="q2" id="2-SA" value="SA" /><label for="2-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q2" id="2-A" value="A"  /><label for="2-A"> Agree&emsp;</label>
+              <input type="radio" name="q2" id="2-N" value="N" /><label for="2-N"> Neutral&emsp;</label>
+              <input type="radio" name="q2" id="2-D" value="D" /><label for="2-D"> Disagree&emsp;</label>
+              <input type="radio" name="q2" id="2-SD" value="SD" /><label for="2-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I think the information in this website is described clearly.</legend>
+              <input type="radio" name="q3" id="3-SA" value="SA" /><label for="3-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q3" id="3-A" value="A"  /><label for="3-A"> Agree&emsp;</label>
+              <input type="radio" name="q3" id="3-N" value="N" /><label for="3-N"> Neutral&emsp;</label>
+              <input type="radio" name="q3" id="3-D" value="D" /><label for="3-D"> Disagree&emsp;</label>
+              <input type="radio" name="q3" id="3-SD" value="SD" /><label for="3-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I think the information in this website is presented clearly.</legend>
+              <input type="radio" name="q4" id="4-SA" value="SA" /><label for="4-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q4" id="4-A" value="A"  /><label for="4-A"> Agree&emsp;</label>
+              <input type="radio" name="q4" id="4-N" value="N" /><label for="4-N"> Neutral&emsp;</label>
+              <input type="radio" name="q4" id="4-D" value="D" /><label for="4-D"> Disagree&emsp;</label>
+              <input type="radio" name="q4" id="4-SD" value="SD" /><label for="4-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I find this website easy to use and navigate.</legend>
+              <input type="radio" name="q5" id="5-SA" value="SA" /><label for="5-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q5" id="5-A" value="A"  /><label for="5-A"> Agree&emsp;</label>
+              <input type="radio" name="q5" id="5-N" value="N" /><label for="5-N"> Neutral&emsp;</label>
+              <input type="radio" name="q5" id="5-D" value="D" /><label for="5-D"> Disagree&emsp;</label>
+              <input type="radio" name="q5" id="5-SD" value="SD" /><label for="5-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I find the design of this website appealing.</legend>
+              <input type="radio" name="q6" id="6-SA" value="SA" /><label for="S6-A"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q6" id="6-A" value="A"  /><label for="6-A"> Agree&emsp;</label>
+              <input type="radio" name="q6" id="6-N" value="N" /><label for="6-N"> Neutral&emsp;</label>
+              <input type="radio" name="q6" id="6-D" value="D" /><label for="6-D"> Disagree&emsp;</label>
+              <input type="radio" name="q6" id="6-SD" value="SD" /><label for="6-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I am likely to revisit this website.</legend>
+              <input type="radio" name="q7" id="7-SA" value="SA" /><label for="7-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q7" id="7-A" value="A"  /><label for="7-A"> Agree&emsp;</label>
+              <input type="radio" name="q7" id="7-N" value="N" /><label for="7-N"> Neutral&emsp;</label>
+              <input type="radio" name="q7" id="7-D" value="D" /><label for="7-D"> Disagree&emsp;</label>
+              <input type="radio" name="q7" id="7-SD" value="SD" /><label for="7-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <br><h3>About the development process</h3>
+
+            <fieldset>
+              <legend>I find the development process to be helpful.</legend>
+              <input type="radio" name="q8" id="8-SA" value="SA" /><label for="8-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q8" id="8-A" value="A"  /><label for="8-A"> Agree&emsp;</label>
+              <input type="radio" name="q8" id="8-N" value="N" /><label for="8-N"> Neutral&emsp;</label>
+              <input type="radio" name="q8" id="8-D" value="D" /><label for="8-D"> Disagree&emsp;</label>
+              <input type="radio" name="q8" id="8-SD" value="SD" /><label for="8-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I personally find this development process useful.</legend>
+              <input type="radio" name="q9" id="9-SA" value="SA" /><label for="9-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q9" id="9-A" value="A"  /><label for="9-A"> Agree&emsp;</label>
+              <input type="radio" name="q9" id="9-N" value="N" /><label for="9-N"> Neutral&emsp;</label>
+              <input type="radio" name="q9" id="9-D" value="D" /><label for="9-D"> Disagree&emsp;</label>
+              <input type="radio" name="q9" id="9-SD" value="SD" /><label for="9-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I find the information in this development process easy to understand.</legend>
+              <input type="radio" name="q10" id="10-SA" value="SA" /><label for="10-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q10" id="10-A" value="A"  /><label for="10-A"> Agree&emsp;</label>
+              <input type="radio" name="q10" id="10-N" value="N" /><label for="10-N"> Neutral&emsp;</label>
+              <input type="radio" name="q10" id="10-D" value="D" /><label for="10-D"> Disagree&emsp;</label>
+              <input type="radio" name="q10" id="10-SD" value="SD" /><label for="10-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I consider this development process user friendly.</legend>
+              <input type="radio" name="q11" id="11-SA" value="SA" /><label for="11-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q11" id="11-A" value="A"  /><label for="11-A"> Agree&emsp;</label>
+              <input type="radio" name="q11" id="11-N" value="N" /><label for="11-N"> Neutral&emsp;</label>
+              <input type="radio" name="q11" id="11-D" value="D" /><label for="11-D"> Disagree&emsp;</label>
+              <input type="radio" name="q11" id="11-SD" value="SD" /><label for="11-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>The development process is presented in a suitable way.</legend>
+              <input type="radio" name="q12" id="12-SA" value="SA" /><label for="12-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q12" id="12-A" value="A"  /><label for="12-A"> Agree&emsp;</label>
+              <input type="radio" name="q12" id="12-N" value="N" /><label for="12-N"> Neutral&emsp;</label>
+              <input type="radio" name="q12" id="12-D" value="D" /><label for="12-D"> Disagree&emsp;</label>
+              <input type="radio" name="q12" id="12-SD" value="SD" /><label for="12-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>This development process provides me with sufficient resources to create my own PWA in Flask.</legend>
+              <input type="radio" name="q13" id="13-SA" value="SA" /><label for="13-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q13" id="13-A" value="A"  /><label for="13-A"> Agree&emsp;</label>
+              <input type="radio" name="q13" id="13-N" value="N" /><label for="13-N"> Neutral&emsp;</label>
+              <input type="radio" name="q13" id="13-D" value="D" /><label for="13-D"> Disagree&emsp;</label>
+              <input type="radio" name="q13" id="13-SD" value="SD" /><label for="13-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I find the structure of the development process clear.</legend>
+              <input type="radio" name="q14" id="14-SA" value="SA" /><label for="14-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q14" id="14-A" value="A"  /><label for="14-A"> Agree&emsp;</label>
+              <input type="radio" name="q14" id="14-N" value="N" /><label for="14-N"> Neutral&emsp;</label>
+              <input type="radio" name="q14" id="14-D" value="D" /><label for="14-D"> Disagree&emsp;</label>
+              <input type="radio" name="q14" id="14-SD" value="SD" /><label for="14-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <fieldset>
+              <legend>I find the development information available to be accurate.</legend>
+              <input type="radio" name="q15" id="15-SA" value="SA" /><label for="15-SA"> Strongly Agree&emsp;</label>
+              <input type="radio" name="q15" id="15-A" value="A"  /><label for="15-A"> Agree&emsp;</label>
+              <input type="radio" name="q15" id="15-N" value="N" /><label for="15-N"> Neutral&emsp;</label>
+              <input type="radio" name="q15" id="15-D" value="D" /><label for="15-D"> Disagree&emsp;</label>
+              <input type="radio" name="q15" id="15-SD" value="SD" /><label for="15-SD"> Strongly Disagree&emsp;</label>
+            </fieldset><br>
+
+            <br><h3>Other comments</h3>
+            <p>Any advice, suggestions or improvements?</p>
+            <textarea name="advice" rows="4" cols="50"></textarea>
+
+            <p>Other Comments:</p>
+            <textarea name="other" rows="4" cols="50"></textarea><br><br>
+
+            <p>Would you like to be updated by email when this site has been revised?</p>
+            <fieldset>
+              <input type="radio" name="email" id="email-yes" value="email-yes">Yes</label><br>
+              <input type="radio" name="email" id="email-no" value="email-no">No</label>
+            </fieldset>
+
+            <textarea name="email-text" id="email" rows="1" cols="50" placeholder="Your email address"></textarea><br><br>
+
+            <br><br><button type="submit" class="btn btn-primary">Submit</button>
+            {% if feedback %}
+              <p class="text-danger float-right">{{ feedback }}</p>
+            {% endif %}
+
+          </form>
+        </div>
+        </div>
+        <!-- jQuery CDN -->
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <!-- Popper.JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <!-- jQuery Custom Scroller CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/install.js') }}"></script>
+
+        <script type="text/javascript">
+          $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+              theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+              $('#sidebar, #content').toggleClass('active');
+              $('.collapse.in').toggleClass('in');
+              $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+          });
+
+          document.querySelector('#contentBody').addEventListener('click', function () {
+            if ($(window).width() < 768) {
+              if ($('#sidebar, #content').hasClass('active')) {
+                $('#sidebar, #content').toggleClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+              }
+            }
+          });
+        </script>
+
+        <script type="text/javascript">
+          $(document).ready(function(){
+            // Add smooth scrolling to all links
+            $("a").on('click', function(event) {
+
+              // Make sure this.hash has a value before overriding default behavior
+              if (this.hash !== "") {
+                // Prevent default anchor click behavior
+                event.preventDefault();
+
+                // Store hash
+                var hash = this.hash;
+
+                // Using jQuery's animate() method to add smooth page scroll
+                // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                $('html, body').animate({
+                  scrollTop: $(hash).offset().top
+                }, 800, function(){
+
+                  // Add hash (#) to URL when done scrolling (default click behavior)
+                  window.location.hash = hash;
+                });
+              } // End if
+            });
+          });
+        </script>
+      </body>
+
+      </html>

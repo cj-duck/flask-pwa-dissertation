@@ -1,0 +1,80 @@
+<h2 id="_hardware" class="header">Hardware</h2>
+<p>
+  Native applications often use the ability to access a device's hardware components. These can be used to enhance a user's experience but also require user permission. To see if a PWA offers sufficient features for your application you can check <a class="link" href="https://whatwebcando.today/" target="_blank">whatwebcando.today</a> to see what features are available on different browsers and operating systems.
+</p>
+
+<h4 id="_hardwareCamera">Camera</h4>
+<p>
+  For users to be able to upload or take photos on your application you can use an input tag in your HTML:
+</p>
+
+<pre><code class="language-html">
+  &lt;input type=&quot;file&quot; accept=&quot;image/*&quot; capture=&quot;camera&quot; /&gt;
+</code></pre>
+
+<p>
+  On mobile devices this will launch the camera application for a file to be uploaded. You can test it out below:
+</p>
+
+<input type="file" accept="image/*" capture="camera"/><br><br>
+
+<p>
+  We can use javascript to make this look better though, assigning the action to any element. As an example we'll make a button for taking a picture:
+</p>
+
+<pre><code class="language-html line-numbers">
+  &lt;button id='photofile' class=&quot;btn btn-success&quot;&gt;&lt;i class=&quot;fas fa-camera&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;input type=&quot;file&quot; id='photofile1' accept=&quot;image/*&quot; capture=&quot;camera&quot; class=&quot;btn&quot; style=&quot;display:none&quot;/&gt;
+</code></pre>
+
+<p>
+  And the javascript to go along:
+</p>
+
+<pre><code class="language-js line-numbers">
+  $("#photofile").click(function () {
+      $("#photofile1").trigger('click');
+  });
+</code></pre>
+
+<p>
+  The working example:
+</p>
+
+<button id='photofile' class="btn btn-success"><i class="fas fa-camera"></i></button><br><br>
+<input type="file" id='photofile1' accept="image/*" capture="camera" class="btn" style="display:none"/>
+
+<h4 id="_hardwareGeo">Geolocation</h4>
+
+<p>
+  To access a devices location we need to first ask for permission. Let's first create a button to ask for permission with:
+</p>
+
+<pre><code class="language-html">
+  &lt;button id=&quot;askLocation&quot; class=&quot;btn btn-success&quot;&gt;Request location permission&lt;/button&gt;
+</code></pre>
+
+<p>
+  And then in our JavaScript, when the button is clicked we'll check if the browser supports location services and get the user's location. This will automatically prompt the user for location access permissions:
+</p>
+
+<pre><code class="language-js line-numbers">
+  if ('geolocation' in navigator) {
+    document.getElementById('askLocation').addEventListener('click', function () {
+      navigator.geolocation.getCurrentPosition(function (location) {
+        console.log(location);
+      });
+    });
+  } else {
+    console.log('Geolocation API not supported.');
+  }
+</code></pre>
+
+<p>
+  The button below is a working example that will print your location beneath it if you agree to share your location.
+</p>
+
+<button id="askLocation" class="btn btn-success"><i class="fas fa-search-location"></i> Request location permission</button><br><br>
+<div id="location-target"></div>
+
+<div class="line"></div>
